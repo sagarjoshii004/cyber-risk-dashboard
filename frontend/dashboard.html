@@ -1,0 +1,209 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | CyberRisk</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/dashboard.js" defer></script>
+</head>
+<body>
+  <div class="dashboard-container">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-icon">CR</div>
+        <div>
+          <h2>CyberRisk</h2>
+          <small>Security Center</small>
+        </div>
+      </div>
+
+      <p class="nav-label">WORKSPACE</p>
+      <nav class="main-nav">
+        <button type="button" class="nav-btn active" data-section="overview">
+          <span>◫</span> Overview
+        </button>
+        <button type="button" class="nav-btn" data-section="risks">
+          <span>⚠</span> Risk Management
+        </button>
+        <button type="button" class="nav-btn" data-section="assets">
+          <span>▣</span> Assets
+        </button>
+        <button type="button" class="nav-btn" data-section="threats">
+          <span>⌁</span> Threats
+        </button>
+        <button type="button" class="nav-btn" data-section="monitoring">
+          <span>◉</span> Monitoring
+        </button>
+        <button type="button" class="nav-btn" data-section="reports">
+          <span>▤</span> Reports
+        </button>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="security-note">
+          <span>●</span>
+          <div><strong>System status</strong><small>Risk monitoring active</small></div>
+        </div>
+        <button type="button" id="logoutButton" class="logout-btn">↪ Log out</button>
+      </div>
+    </aside>
+
+    <main class="dashboard-main">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">SECURITY OPERATIONS / OVERVIEW</p>
+          <h1 id="pageTitle">Dashboard Overview</h1>
+        </div>
+        <div class="topbar-right">
+          <span class="status-pill"><span class="status-dot"></span><span id="connectionStatus">Connecting...</span></span>
+          <div class="user-avatar">A</div>
+        </div>
+      </header>
+
+      <div id="messageBox" class="message-box" role="status" aria-live="polite"></div>
+
+      <section id="overview" class="dashboard-section">
+        <div class="welcome-panel">
+          <div>
+            <p class="eyebrow light-eyebrow">YOUR SECURITY AT A GLANCE</p>
+            <h2>Stay ahead of cyber risk.</h2>
+            <p>Identify, assess, and manage your organization's security risks in one place.</p>
+            <button type="button" class="light-btn" data-go-section="risks">Manage risks <span>→</span></button>
+          </div>
+          <div class="welcome-art" aria-hidden="true">
+            <div class="shield">✓</div>
+            <div class="orbit orbit-one"></div>
+            <div class="orbit orbit-two"></div>
+          </div>
+        </div>
+
+        <div class="section-title-row">
+          <div><h2>Risk summary</h2><p>Current status of recorded risks</p></div>
+          <button type="button" class="secondary-btn" id="overviewRefreshButton">↻ Refresh</button>
+        </div>
+
+        <div class="stats-container">
+          <article class="stat-card">
+            <div class="stat-top"><span>Total risks</span><span class="stat-icon purple">▤</span></div>
+            <p class="stat-number" id="totalRisks">0</p>
+            <small>Recorded in the system</small>
+          </article>
+          <article class="stat-card">
+            <div class="stat-top"><span>Critical risks</span><span class="stat-icon red">!</span></div>
+            <p class="stat-number" id="criticalRisks">0</p>
+            <small>Require urgent attention</small>
+          </article>
+          <article class="stat-card">
+            <div class="stat-top"><span>Open risks</span><span class="stat-icon amber">◷</span></div>
+            <p class="stat-number" id="openRisks">0</p>
+            <small>Still need action</small>
+          </article>
+          <article class="stat-card">
+            <div class="stat-top"><span>Resolved risks</span><span class="stat-icon green">✓</span></div>
+            <p class="stat-number" id="resolvedRisks">0</p>
+            <small>Marked as resolved</small>
+          </article>
+        </div>
+
+        <div class="section-title-row">
+          <div><h2>Recent risks</h2><p>Your latest risk records</p></div>
+          <button type="button" class="text-btn" data-go-section="risks">View all →</button>
+        </div>
+        <div class="table-card">
+          <div class="table-container">
+            <table id="overviewRisksTable">
+              <thead><tr><th>Risk</th><th>Asset</th><th>Score</th><th>Severity</th><th>Status</th></tr></thead>
+              <tbody><tr><td colspan="5">Loading risks...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="risks" class="dashboard-section" hidden>
+        <div class="section-title-row">
+          <div><h2>Risk Management</h2><p>Track and manage your cybersecurity risks.</p></div>
+          <div class="button-group">
+            <button type="button" class="secondary-btn" id="refreshButton">↻ Refresh</button>
+            <button type="button" class="primary-btn" id="addRiskButton">＋ Add New Risk</button>
+          </div>
+        </div>
+        <div class="stats-container compact-stats">
+          <article class="stat-card"><span>Total risks</span><p class="stat-number" id="riskPageTotal">0</p></article>
+          <article class="stat-card"><span>Critical</span><p class="stat-number red-number" id="riskPageCritical">0</p></article>
+          <article class="stat-card"><span>Open</span><p class="stat-number" id="riskPageOpen">0</p></article>
+        </div>
+        <div class="table-card">
+          <div class="table-heading"><div><h3>All risks</h3><p>Risk register</p></div></div>
+          <div class="table-container">
+            <table id="risksTable">
+              <thead>
+                <tr><th>Risk title</th><th>Asset</th><th>Likelihood</th><th>Impact</th><th>Score</th><th>Severity</th><th>Status</th><th>Actions</th></tr>
+              </thead>
+              <tbody><tr><td colspan="8">Loading risks...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="assets" class="dashboard-section" hidden>
+        <div class="section-title-row"><div><h2>Assets</h2><p>Assets associated with your recorded risks.</p></div></div>
+        <div class="table-card">
+          <div class="table-container">
+            <table id="assetsTable">
+              <thead><tr><th>Asset</th><th>Associated risks</th><th>Highest severity</th></tr></thead>
+              <tbody><tr><td colspan="3">Loading assets...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="threats" class="dashboard-section" hidden>
+        <div class="section-title-row"><div><h2>Threats</h2><p>Review risk records that may represent cybersecurity threats.</p></div><button type="button" class="primary-btn" data-go-section="risks">＋ Add a risk</button></div>
+        <div class="info-card"><h3>Threat overview</h3><p>Use the risk register to document threats, their affected assets, likelihood, and impact. The severity is calculated automatically from likelihood × impact.</p></div>
+        <div id="threatSummary" class="stats-container"></div>
+      </section>
+
+      <section id="monitoring" class="dashboard-section" hidden>
+        <div class="section-title-row"><div><h2>Monitoring</h2><p>Backend and risk register status.</p></div><button type="button" class="secondary-btn" id="monitorRefreshButton">↻ Check again</button></div>
+        <div class="info-card"><h3 id="monitorStatus">Checking status...</h3><p id="monitorDescription">The dashboard checks the backend when you refresh the risk list.</p></div>
+      </section>
+
+      <section id="reports" class="dashboard-section" hidden>
+        <div class="section-title-row"><div><h2>Reports</h2><p>Print or save a report of your current risk register.</p></div><button type="button" class="primary-btn" id="printReportButton">▤ Print report</button></div>
+        <div class="stats-container">
+          <article class="stat-card"><span>Total risks</span><p class="stat-number" id="reportTotal">0</p></article>
+          <article class="stat-card"><span>Critical risks</span><p class="stat-number" id="reportCritical">0</p></article>
+          <article class="stat-card"><span>Resolved risks</span><p class="stat-number" id="reportResolved">0</p></article>
+        </div>
+        <div class="info-card"><h3>Generate a report</h3><p>Choose Print report to open your browser's print dialog. You can select “Save as PDF” to create a PDF copy.</p></div>
+      </section>
+
+      <footer class="dashboard-footer">CyberRisk Dashboard <span>Cybersecurity risk management</span></footer>
+    </main>
+  </div>
+
+  <dialog id="riskDialog" class="risk-dialog">
+    <form id="riskForm">
+      <div class="dialog-header"><div><p class="eyebrow">RISK REGISTER</p><h2 id="riskDialogTitle">Add new risk</h2></div><button type="button" class="dialog-close" id="closeRiskDialog" aria-label="Close">×</button></div>
+      <input type="hidden" id="riskId">
+      <label for="riskTitle">Risk title *</label>
+      <input id="riskTitle" name="title" required maxlength="150" placeholder="e.g. Unauthorized access">
+      <label for="riskDescription">Description</label>
+      <textarea id="riskDescription" name="description" rows="3" placeholder="Describe the potential risk"></textarea>
+      <label for="riskAsset">Affected asset</label>
+      <input id="riskAsset" name="asset" placeholder="e.g. Company database">
+      <div class="form-grid">
+        <div><label for="riskLikelihood">Likelihood (1–5) *</label><select id="riskLikelihood" name="likelihood" required><option value="1">1 — Very low</option><option value="2">2 — Low</option><option value="3" selected>3 — Moderate</option><option value="4">4 — High</option><option value="5">5 — Very high</option></select></div>
+        <div><label for="riskImpact">Impact (1–5) *</label><select id="riskImpact" name="impact" required><option value="1">1 — Very low</option><option value="2">2 — Low</option><option value="3" selected>3 — Moderate</option><option value="4">4 — High</option><option value="5">5 — Very high</option></select></div>
+      </div>
+      <label for="riskStatus">Status</label>
+      <select id="riskStatus" name="status"><option>Open</option><option>In Progress</option><option>Resolved</option></select>
+      <p id="riskFormMessage" class="form-message" role="status"></p>
+      <div class="dialog-actions"><button type="button" class="secondary-btn" id="cancelRiskButton">Cancel</button><button type="submit" class="primary-btn" id="saveRiskButton">Save risk</button></div>
+    </form>
+  </dialog>
+</body>
+</html>
+```
